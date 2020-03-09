@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        draw star by number
+    </title>
+    <style>
+        form {
+            /* Just to center the form on the page */
+            margin: 0 auto;
+            width: 600px;
+            /* To see the outline of the form */
+            padding: 1em;
+            border: 1px solid #CCC;
+            border-radius: 1em;
+        }
+        form div + div {
+            /* div div 사이에 여백 추가*/
+            margin-top: 1em;
+        }
+        input {
+            width:600px;
+            height:50px;
+            font-size:12px;
+        }
+        label {
+            /* To make sure that all label have the same size and are properly align */
+            display: inline-block;
+            width: 120px;
+            text-align: right;
+        }
+        .button {
+            /* To position the buttons to the same position of the text fields */
+            padding-left: 90px; /* same size as the label elements */
+        }
+
+        button {
+            /* This extra margin represent roughly the same space as the space
+            between the labels and their text fields */
+            /* margin-left: .5em; */
+            display: inline-block; 
+            width: 100px;
+            height: 25px;
+        }      
+    </style>
+</head>
+<body>
+    <div id="container">
+        <center>
+            <h3> 변경하고 싶은 긍정/부정 문장을 영어로 입력하세요.</h3>
+            <h5> 예시) the calzones are awesome and the lunch special they have is perfect . </h5><br>
+        </center>
+    </div>    
+    <form method="GET" action="/transformation">
+        <div>
+            <label for="sentance">문장 입력</label>
+            <input type="text"  name="sentance">
+        </div>
+        <div class='button'>
+            <button type="submit">문장 변경</button>
+            <button type="clear" value=''>화면 초기화</button>
+        </div>
+    </form>
+    <div>        
+        <p>
+            <center>
+            {% if sentance == '' %}
+                <h5> 아직 아무 값도 입력이 안되었습니다. </h5>
+            {% else %}
+                <h5> {{sentance}} 를 입력받았습니다. </h5>
+                <h5> {{sentance_tf}} 으로 변경하였습니다. </h5>
+                <h5> {{sentiment}} 문장 입니다. </h5>
+            {% endif %}
+            </center>
+        </p>        
+    </div>
+</body>
+</html>
