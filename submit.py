@@ -23,9 +23,31 @@ def transformation(sentence=''):
         ## 넘겨받은 문자 
         temp = request.args.get('sentance')
         temp = str(temp)
+        temp = temp.lower()
+        
+        pos1 = temp.find('.')
+        if pos1 is not -1 and temp[pos1-1] is not ' ':
+            temp = temp.replace('.', ' .')
+
+        pos2 = temp.find('!')
+        if pos2 is not -1 and temp[pos2-1] is not ' ':
+            temp = temp.replace('!', ' !')
+            
+        pos3 = temp.find('?')
+        if pos3 is not -1 and temp[pos3-1] is not ' ':
+            temp = temp.replace('?', ' ?')
+        
+        word_len = len(temp.split(' '))        
+        if word_len < 3:
+            temp = temp + ' ' + temp
+            boolin = 'False'
+        else:
+            boolin = 'True'
+            
         # 변환 결과
-        sentance_tf, sentiment = demo.get_sentence(temp)
-        return render_template('submit.html', sentance=temp, sentance_tf=sentance_tf, sentiment=sentiment)
+        sentance_tf, sentiment = demo.get_sentence(temp)            
+        
+        return render_template('submit.html', sentance=temp, sentance_tf=sentance_tf, sentiment=sentiment, boolin=boolin)
     ## else 로 하지 않은 것은 POST, GET 이외에 다른 method로 넘어왔을 때를 구분하기 위함
 
 if __name__ == '__main__':

@@ -32,7 +32,7 @@ for key, value in token2num.items():
     num2token[value] = key
 
 
-def get_sentence(sentence, alpha=0.5, beta=0.1):
+def get_sentence(sentence, alpha=0.6, beta=0.2):
     """data setting"""
     neg_labels = [] # negative labels
     neg_labels.append([1,0])
@@ -53,13 +53,15 @@ def get_sentence(sentence, alpha=0.5, beta=0.1):
     if sent_cls == 0:
         fake_attribute = pos_attribute
         sentiment = 0
+        gen_sentiment = 1
         sentiment_str = 'negative'
-        sentimen_trans = 'positive'
+        sentiment_trans = 'positive'
     else: # sent_cls == 1
         fake_attribute = neg_attribute
         sentiment = 1
+        gen_sentiment = 0
         sentiment_str = 'positive'
-        sentimen_trans = 'negative'
+        sentiment_trans = 'negative'
 
     # delete model
     max_len = int(token_idx.shape[1]*(1-beta))
@@ -84,6 +86,8 @@ def get_sentence(sentence, alpha=0.5, beta=0.1):
     enc_out = genmodel.encoder(del_idx)
     gen_sen_2 = genmodel.generated_sentence(enc_out, fake_attribute, ori_length)
     
+#     gen_token_idx = torch.tensor(gpt_tokenizer.encode(gen_sen_2)).unsqueeze(0).cuda()
+#     gen_dis_out = dismodel.discriminator(gen_token_idx)    
+#     gen_sent_prob = F.softmax(gen_dis_out, 1).squeeze(0)[gen_sentiment].cpu().detach().numpy().item()    
     
-#     return sentiment_str, del_sen, del_percent, gen_sen_2.rstrip('<|endoftext|>')
-    return gen_sen_2.rstrip('<|endoftext|>'), sentimen_trans
+    return gen_sen_2.rstrip('<|endoftext|>'), sentiment_trans
